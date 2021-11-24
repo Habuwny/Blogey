@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddSoftDeletesToBlogPostTable extends Migration
+class AddSoftDeletesToBlogPostsTable extends Migration
 {
   /**
    * Run the migrations.
@@ -13,7 +13,7 @@ class AddSoftDeletesToBlogPostTable extends Migration
    */
   public function up()
   {
-    Schema::table('blog_post', function (Blueprint $table) {
+    Schema::table('blog_posts', function (Blueprint $table) {
       $table->softDeletes();
     });
   }
@@ -25,7 +25,7 @@ class AddSoftDeletesToBlogPostTable extends Migration
    */
   public function down()
   {
-    Schema::table('blog_post', function (Blueprint $table) {
+    Schema::table('blog_posts', function (Blueprint $table) {
       $table->dropSoftDeletes();
     });
   }

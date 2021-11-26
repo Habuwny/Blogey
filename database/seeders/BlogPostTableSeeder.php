@@ -17,7 +17,7 @@ class BlogPostTableSeeder extends Seeder
   {
     $postsCount = (int) $this->command->ask(
       'How many posts wold you like to generate ?',
-      50
+      500
     );
     $users = User::all();
     BlogPost::factory()

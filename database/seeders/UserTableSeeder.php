@@ -17,7 +17,7 @@ class UserTableSeeder extends Seeder
     $usersCount = max(
       (int) $this->command->ask(
         'How many users wold you like to generate ?',
-        50
+        200
       ),
       1
     );

@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
-use Illuminate\Support\Facades\Gate;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class PostsController extends Controller
 {
@@ -38,7 +37,18 @@ class PostsController extends Controller
     // comments_count
 
     return view('posts.index', [
-      'posts' => BlogPost::withCount('comments')->get(),
+      'posts' => BlogPost::latest()
+        ->withCount('comments')
+        ->get(),
+      'mostCommented' => BlogPost::mostCommented()
+        ->take(5)
+        ->get(),
+      'mostActive' => User::withMostBlogPosts()
+        ->take(5)
+        ->get(),
+      'mosActiveLastMonth' => User::withMostBlogPostsLastMonth()
+        ->take(5)
+        ->get(),
     ]);
   }
 
@@ -51,7 +61,17 @@ class PostsController extends Controller
    */
   public function show($id)
   {
-    return view('posts.show', ['post' => BlogPost::findOrFail($id)]);
+    return view('posts.show', [
+      'post' => BlogPost::with('comments')->findOrFail($id),
+    ]);
+    //     return view('posts.show', [
+    //      'post' => BlogPost::with([
+    //        'comments' => function ($query) {
+    //          return $query->latest();
+    //        },
+    //      ])->findOrFail($id),
+    //    ]);
+    //
   }
 
   public function create()
@@ -63,6 +83,8 @@ class PostsController extends Controller
   public function store(StorePost $request)
   {
     $validatedData = $request->validated();
+    $validatedData['user_id'] = $request->user()->id;
+
     $blogPost = BlogPost::create($validatedData);
     $request->session()->flash('status', 'Blog post was created!');
 

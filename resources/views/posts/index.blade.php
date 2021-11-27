@@ -15,12 +15,7 @@
             </del>
           @endif
         </h3>
-        <p>
-          Added {{ $post->created_at->diffForHumans() }}
-          <strong class="font-weight-bolder text-dark"> by</strong> <span
-            class="font-weight-bolder text-success">{{$post->user->name}}</span>
-        </p>
-
+        <x-updated :name="$post->user->name" :date="$post->created_at"/>
         @if($post->comments_count)
           <p>{{ $post->comments_count }} comments</p>
         @else
@@ -57,58 +52,26 @@
     <div class="col-4">
       <div class="container">
         <div class="row">
-          <div class="card" style="width: 100%;">
-            <div class="card-body">
-              <h5 class="card-title">Most Commented </h5>
-              <h6 class="card-subtitle mb-2 text-muted">What people currently taking about.</h6>
-              <ul class="list-group list-group-flush">
-                @foreach ( $mostCommented as $item )
-                  <li class="list-group-item
-               text-success font-weight-bold">
-                    <a href="{{ route('posts.show', ['post'=>$post->id]) }}">
-                      {{ $item->title }}
-
-                    </a>
-                  </li>
-                @endforeach
-
-              </ul>
-            </div>
-          </div>
+          <x-card
+            :link="true"
+            title="Most Commented"
+            subtitle="What people are currently talking about"
+            :items="$mostCommented"
+          />
         </div>
         <div class="row mt-4">
-          <div class="card" style="width: 100%;">
-            <div class="card-body">
-              <h5 class="card-title">Most Active </h5>
-              <h6 class="card-subtitle mb-2 text-muted">Users with most written posts.</h6>
-              <ul class="list-group list-group-flush">
-                @foreach ( $mostActive as $item )
-                  <li class="list-group-item
-               text-success font-weight-bold">
-                    {{ $item->name }}
-                  </li>
-                @endforeach
-
-              </ul>
-            </div>
-          </div>
+          <x-card
+            title="Most Active Last Month"
+            subtitle="Writers with most written posts"
+            :items="$mostActive"
+          />
         </div>
         <div class="row mt-4">
-          <div class="card" style="width: 100%;">
-            <div class="card-body">
-              <h5 class="card-title">Most Active Last Month</h5>
-              <h6 class="card-subtitle mb-2 text-muted">Users with most written posts in last month.</h6>
-              <ul class="list-group list-group-flush">
-                @foreach ( $mosActiveLastMonth as $item )
-                  <li class="list-group-item
-               text-success font-weight-bold">
-                    {{ $item->name }}
-                  </li>
-                @endforeach
-
-              </ul>
-            </div>
-          </div>
+          <x-card
+            title="Most Active Last Month"
+            subtitle="Writers with most written posts"
+            :items="$mosActiveLastMonth"
+          />
         </div>
       </div>
     </div>

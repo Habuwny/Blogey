@@ -1,14 +1,16 @@
 @extends('layout')
 
 @section('content')
-  <h1>{{ $post->title }}</h1>
+  <h1>
+    {{ $post->title }}
+    @php ( $time = now()->diffInMinutes($post->created_at) < 50)
+      <x-badge  name="Naw!" type="success" :show="$time"/>
+  </h1>
   <p>{{ $post->content }}</p>
 
-  <p>Added {{ $post->created_at->diffForHumans() }}</p>
+  <x-updated :name="$post->user->name" :date="$post->created_at"/>
+  <x-updated title="Updated" :date="$post->updated_at"/>
 
-  @if ((new Carbon\Carbon())->diffInMinutes($post->created_at) < 5 )
-    <strong>New!</strong>
-  @endif
 
   <h4>Comments</h4>
 
@@ -16,9 +18,7 @@
     <p>
       {{ $comment->content }}
     </p>
-    <p class="text-muted">
-      added {{ $comment->created_at->diffForHumans() }}
-    </p>
+    <x-updated  :date="$comment->created_at"/>
   @empty
     <p>No comments yet!</p>
   @endforelse

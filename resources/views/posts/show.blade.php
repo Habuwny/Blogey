@@ -10,8 +10,7 @@
 
   <x-updated :name="$post->user->name" :date="$post->created_at"/>
   <x-updated title="Updated" :date="$post->updated_at"/>
-
-
+  <p>Currently read by {{$counter}} people</p>
   <h4>Comments</h4>
 
   @forelse($post->comments as $comment)

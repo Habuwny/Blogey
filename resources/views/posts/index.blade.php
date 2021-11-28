@@ -22,27 +22,31 @@
           <p>No comments yet!</p>
         @endif
 
+
         <div class="d-flex ">
-          @can('update', $post)
-            <a href="{{ route('posts.edit', ['post' => $post->id]) }}"
-               class="btn btn-primary m-1">
-              Edit
-            </a>
-          @endcan
-
-          @if (!$post->trashed())
-
-            @can('delete', $post)
-              <form method="POST" class="fm-inline m-1"
-                    action="{{ route('posts.destroy', ['post' => $post->id]) }}">
-                @csrf
-                @method('DELETE')
-
-                <input type="submit" value="Trash!" class="btn btn-danger"/>
-              </form>
+          @auth
+            @can('update', $post)
+              <a href="{{ route('posts.edit', ['post' => $post->id]) }}"
+                 class="btn btn-primary m-1">
+                Edit
+              </a>
             @endcan
-          @endif
+          @endauth
 
+
+          @auth()
+            @if (!$post->trashed())
+              @can('delete', $post)
+                <form method="POST" class="fm-inline m-1"
+                      action="{{ route('posts.destroy', ['post' => $post->id]) }}">
+                  @csrf
+                  @method('DELETE')
+
+                  <input type="submit" value="Trash!" class="btn btn-danger"/>
+                </form>
+              @endcan
+            @endif
+          @endauth
         </div>
         </p>
       @empty

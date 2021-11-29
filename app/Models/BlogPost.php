@@ -25,6 +25,11 @@ class BlogPost extends Model
     return $this->belongsTo(User::class);
   }
 
+  //
+  public function tags()
+  {
+    return $this->belongsToMany(Tag::class)->withTimestamps();
+  }
   public function scopeLatest(Builder $query)
   {
     return $query->orderBy(static::CREATED_AT, 'desc');
@@ -40,10 +45,11 @@ class BlogPost extends Model
     parent::boot();
     static::deleting(function (BlogPost $blogPost) {
       $blogPost->comments()->delete();
+      Cache::tags(['blog-post'])->forge("blog-post-{$blogPost->id}");
     });
     //RESTORE FROM TRASH
     static::updating(function (BlogPost $blogPost) {
-      Cache::forget("blog-post-{$blogPost->id}");
+      Cache::tags(['blog-post'])->forget("blog-post-{$blogPost->id}");
     });
     static::restoring(function (BlogPost $blogPost) {
       $blogPost->comments()->restore();

@@ -23,11 +23,13 @@ class DatabaseSeeder extends Seeder
       $this->command->call('migrate:refresh');
       $this->command->info('Database was refreshed');
     }
-    Cache::tags(['blog-post'])->flash();
+    //    Cache::tags(['blog-post'])->flash();
     $this->call([
       UserTableSeeder::class,
       BlogPostTableSeeder::class,
       CommentsTableSeeder::class,
+      TagsTableSeeder::class,
+      BlogPostTagTableSeeder::class,
     ]);
   }
 }

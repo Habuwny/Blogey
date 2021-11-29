@@ -37,38 +37,12 @@ class PostsController extends Controller
 
     // comments_count
 
-    $mostCommented = Cache::tags(['blog-post'])->remember(
-      'mostCommented',
-      60,
-      function () {
-        return BlogPost::mostCommented()
-          ->take(5)
-          ->get();
-      }
-    );
-    $mostActive = Cache::remember('mostActive', 60, function () {
-      return User::withMostBlogPosts()
-        ->take(5)
-        ->get();
-    });
-    $mosActiveLastMonth = Cache::remember(
-      'mosActiveLastMonth',
-      60,
-      function () {
-        return User::withMostBlogPostsLastMonth()
-          ->take(5)
-          ->get();
-      }
-    );
-
     return view('posts.index', [
       'posts' => BlogPost::latest()
         ->withCount('comments')
         ->with('user')
+        ->with('tags')
         ->get(),
-      'mostCommented' => $mostCommented,
-      'mostActive' => $mostActive,
-      'mosActiveLastMonth' => $mosActiveLastMonth,
     ]);
   }
 
@@ -78,7 +52,12 @@ class PostsController extends Controller
       "blog-post-{$id}",
       60,
       function () use ($id) {
-        return BlogPost::with('comments')->findOrFail($id);
+        return BlogPost::with(
+          'comments',
+          'tags',
+          'user',
+          'comments.user'
+        )->findOrFail($id);
       }
     );
     $sessionId = session()->getId();

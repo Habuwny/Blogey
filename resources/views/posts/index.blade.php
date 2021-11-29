@@ -16,6 +16,7 @@
           @endif
         </h3>
         <x-updated :name="$post->user->name" :date="$post->created_at"/>
+        <x-tags :tags="$post->tags"/>
         @if($post->comments_count)
           <p>{{ $post->comments_count }} comments</p>
         @else
@@ -54,30 +55,7 @@
       @endforelse
     </div>
     <div class="col-4">
-      <div class="container">
-        <div class="row">
-          <x-card
-            :link="true"
-            title="Most Commented"
-            subtitle="What people are currently talking about"
-            :items="$mostCommented"
-          />
-        </div>
-        <div class="row mt-4">
-          <x-card
-            title="Most Active Last Month"
-            subtitle="Writers with most written posts"
-            :items="$mostActive"
-          />
-        </div>
-        <div class="row mt-4">
-          <x-card
-            title="Most Active Last Month"
-            subtitle="Writers with most written posts"
-            :items="$mosActiveLastMonth"
-          />
-        </div>
-      </div>
+      @include('posts._activity')
     </div>
   </div>
 @endsection('content')

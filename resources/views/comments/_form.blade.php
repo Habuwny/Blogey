@@ -15,4 +15,5 @@
     <a href="{{ route('login') }}">Login </a> to post comments!
   @endauth
 </div>
+
 <hr/>

@@ -3,12 +3,29 @@
 @section('content')
   <div class="row">
     <div class="col-8">
-      <h1>
-        {{ $post->title }}
-        @php ( $time = now()->diffInMinutes($post->created_at) < 50)
-        <x-badge name="Naw!" type="success" :show="$time"/>
-      </h1>
+      @if ($post->image)
+        <div
+          style="background-image: url('{{ $post->image->url() }}');
+            min-height: 500px;
+            color: white;
+            text-align: center;
+            background-attachment: fixed "
+        >
+          <h1 style="padding-top: 100px; text-shadow: 1px 2px #000">
+            @else
+              <h1>
+                @endif
+                {{ $post->title }}
+                @php ( $time = now()->diffInMinutes($post->created_at) < 50)
+                <x-badge name="Naw!" type="success" :show="$time"/>
+                @if ($post->image)
+              </h1>
+        </div>
+        @else
+        </h1>
+      @endif
       <p>{{ $post->content }}</p>
+      {{--          <img src="{{ $post->image->url() }}" alt="post-img"/>--}}
 
       <x-updated :name="$post->user->name" :date="$post->created_at"/>
       <x-updated title="Updated" :date="$post->updated_at"/>

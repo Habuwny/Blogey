@@ -9,12 +9,18 @@ class Updated extends Component
   public $name;
   public $title;
   public $date;
-  public function __construct($title = 'Added', $name = null, $date)
-  {
+  public $userId;
+  public function __construct(
+    $title = 'Added',
+    $name = null,
+    $date,
+    $userId = null
+  ) {
     //
     $this->name = $name;
     $this->title = $title;
     $this->date = $date;
+    $this->userId = $userId;
   }
 
   /**

@@ -49,10 +49,11 @@ class UserController extends Controller
       $path = $request->file('avatar')->store('avatars');
 
       if ($user->image) {
+        //        dd($path);
         $user->image->path = $path;
         $user->image->save();
       } else {
-        $user->image->save(Image::make(['path' => $path]));
+        $user->image()->save(Image::make(['path' => $path]));
       }
     }
 
